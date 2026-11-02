@@ -3,58 +3,58 @@ package com.pluralsight;
 import java.time.LocalDateTime;
 
 public class Transaction {
-    private LocalDateTime transactionDate;
-    private LocalDateTime transactionTime;
-    private String transactionDescription;
-    private String transactionVendor;
-    private double transactionAmount;
+    private LocalDateTime date;
+    private LocalDateTime time;
+    private String description;
+    private String vendor;
+    private double amount;
 
-    public Transaction(LocalDateTime transactionDate, LocalDateTime transactionTime, String transactionDescription, String transactionVendor, double transactionAmount) {
-        this.transactionDate = transactionDate;
-        this.transactionTime = transactionTime;
-        this.transactionDescription = transactionDescription;
-        this.transactionVendor = transactionVendor;
-        this.transactionAmount = transactionAmount;
+    public Transaction(LocalDateTime date, LocalDateTime time, String description, String vendor, double amount) {
+        this.date = date;
+        this.time = time;
+        this.description = description;
+        this.vendor = vendor;
+        this.amount = amount;
     }
 
 
-    public LocalDateTime getTransactionDate() {
-        return transactionDate;
+    public LocalDateTime getDate() {
+        return date;
     }
-    public void setTransactionDate(LocalDateTime transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
-
-    public LocalDateTime getTransactionTime() {
-        return transactionTime;
-    }
-    public void setTransactionTime(LocalDateTime transactionTime) {
-        this.transactionTime = transactionTime;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
 
-    public String getTransactionDescription() {
-        return transactionDescription;
+    public LocalDateTime getTime() {
+        return time;
     }
-    public void setTransactionDescription(String transactionDescription) {
-        this.transactionDescription = transactionDescription;
-    }
-
-
-    public String getTransactionVendor() {
-        return transactionVendor;
-    }
-    public void setTransactionVendor(String transactionVendor) {
-        this.transactionVendor = transactionVendor;
+    public void setTime(LocalDateTime time) {
+        this.time = time;
     }
 
 
-    public double getTransactionAmount() {
-        return transactionAmount;
+    public String getDescription() {
+        return description;
     }
-    public void setTransactionAmount(double transactionAmount) {
-        this.transactionAmount = transactionAmount;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    public String getVendor() {
+        return vendor;
+    }
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
+
+
+    public double getAmount() {
+        return amount;
+    }
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
 }
