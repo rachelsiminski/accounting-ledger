@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class App {
     private static final Scanner scanner = new Scanner(System.in);
-    private static ArrayList<Transaction> transactions = new ArrayList<>();
+    private static final ArrayList<Transaction> transactions = new ArrayList<>();
 
     public static void main(String[] args) {
 
