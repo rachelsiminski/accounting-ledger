@@ -251,6 +251,46 @@ public class App {
 
     }
 
+    private static ArrayList<Transaction> viewMonthToDate() {
+
+        System.out.println("FIXME");
+
+        return transactions;
+
+    }
+
+    private static ArrayList<Transaction> viewPreviousMonth() {
+
+        System.out.println("FIXME");
+
+        return transactions;
+
+    }
+
+    private static ArrayList<Transaction> viewYearToDate() {
+
+        System.out.println("FIXME");
+
+        return transactions;
+
+    }
+
+    private static ArrayList<Transaction> viewPreviousYear() {
+
+        System.out.println("FIXME");
+
+        return transactions;
+
+    }
+
+    private static ArrayList<Transaction> searchByVendor() {
+
+        System.out.println("FIXME");
+
+        return transactions;
+
+    }
+
     private static String promptForString() {
         String userString = scanner.nextLine();
 
