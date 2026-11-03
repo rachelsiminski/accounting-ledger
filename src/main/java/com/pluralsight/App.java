@@ -1,8 +1,9 @@
 package com.pluralsight;
 
 import java.io.*;
+import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -53,6 +54,9 @@ public class App {
             //throw new RuntimeException(e);
             System.out.println("Unable to read the file, please check the location and try again.");
 
+        } catch (IOException e) {
+            System.out.println("Error reading file");
+            //throw new RuntimeException(e);
         }
     }
 
@@ -148,8 +152,29 @@ public class App {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
 
+            System.out.println("Enter the date of the transaction: (yyyy-mm-dd)");
+            LocalDate date = promptForDate();
+
+            System.out.println("Enter the time of the transaction: (hh:mm:ss)");
+            LocalTime time = promptForTime();
+
+            System.out.println("Enter the description: ");
+            String description = promptForString();
+
+            System.out.println("Enter the vendor: ");
+            String vendor = promptForString();
+
+            System.out.println("Enter the amount: ");
+            double amount = promptForDouble();
+
+            Transaction transaction = new Transaction(date, time, description, vendor, amount);
+
+            transactions.add(transaction);
+
+            bufferedWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amount + "\n");
 
 
+            bufferedWriter.close();
 
         } catch (IOException e) {
             //throw new RuntimeException(e);
@@ -214,11 +239,20 @@ public class App {
     }
 
     private static double promptForDouble() {
-        String userDouble = scanner.nextLine();
+        String userDouble = null;
 
-        if (userDouble.isEmpty()) {
-            System.out.println("Input not recorded, please try again: ");
+        try {
             userDouble = scanner.nextLine();
+
+            if (userDouble.isEmpty()) {
+                System.out.println("Input not recorded, please try again: ");
+                userDouble = scanner.nextLine();
+            }
+        } catch (NumberFormatException e) {
+
+            System.out.println("Please enter a number");
+            //throw new RuntimeException(e);
+
         }
 
         return Double.parseDouble(userDouble);
@@ -227,14 +261,26 @@ public class App {
 
     private static LocalDate promptForDate() {
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter dateFormatter = null;
+        String userDate = null;
 
-        String userDate = scanner.nextLine();
+        try {
 
-        if (userDate.isEmpty()) {
+            dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-            System.out.println("Input not recorded, please try again: ");
             userDate = scanner.nextLine();
+
+            if (userDate.isEmpty()) {
+
+                System.out.println("Input not recorded, please try again: ");
+                userDate = scanner.nextLine();
+
+            }
+
+        } catch (DateTimeException e) {
+
+            System.out.println("Please enter a date in the format yyyy-mm-dd");
+            //throw new RuntimeException(e);
 
         }
 
@@ -243,14 +289,26 @@ public class App {
 
     private static LocalTime promptForTime() {
 
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        DateTimeFormatter timeFormatter = null;
+        String userTime = null;
 
-        String userTime = scanner.nextLine();
+        try {
 
-        if (userTime.isEmpty()) {
+            timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-            System.out.println("Input not recorded, please try again: ");
             userTime = scanner.nextLine();
+
+            if (userTime.isEmpty()) {
+
+                System.out.println("Input not recorded, please try again: ");
+                userTime = scanner.nextLine();
+
+            }
+
+        } catch (Exception e) {
+
+            System.out.println("Please enter the time in the format hh:mm:ss");
+            //throw new RuntimeException(e);
 
         }
 
