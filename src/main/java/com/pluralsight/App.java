@@ -15,6 +15,12 @@ public class App {
 
     public static void main(String[] args) {
 
+        loadTransactions();
+
+        runHomeScreen();
+    }
+
+    private static void loadTransactions() {
         try {
 
 //            System.out.println("Enter the name of the file to be accessed: ");
@@ -57,8 +63,6 @@ public class App {
             //throw new RuntimeException(e);
             System.out.println("Unable to write to the file, please check connection and try again.");
         }
-
-        runHomeScreen();
     }
 
     private static void runHomeScreen() {
@@ -119,8 +123,8 @@ public class App {
 
             switch (userChoice) {
                 case "a" -> viewAllTransactions();
-                //case "d" -> viewDeposits();
-                //case "p" -> viewPayments;
+                case "d" -> viewDeposits();
+                case "p" -> viewPayments();
                 //case "r" -> runReportsScreen();
                 case "h" -> System.out.println("Returning to home screen...");
                 default -> System.out.println("Invalid selection, please try again from the list above.");
@@ -138,4 +142,29 @@ public class App {
         return transactions;
     }
 
+    private static ArrayList<Transaction> viewDeposits() {
+        ArrayList<Transaction> deposits = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getAmount() > 0) {
+                deposits.add(transaction);
+            }
+        }
+
+        return deposits;
+
+    }
+
+    private static ArrayList<Transaction> viewPayments() {
+        ArrayList<Transaction> payments = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getAmount() < 0) {
+                payments.add(transaction);
+            }
+        }
+
+        return payments;
+
+    }
 }
