@@ -3,7 +3,6 @@ package com.pluralsight;
 import java.io.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
-//import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -17,8 +16,8 @@ public class App {
     public static void main(String[] args) {
 
         loadTransactions();
-
         runHomeScreen();
+
     }
 
     private static void loadTransactions() {
@@ -33,18 +32,11 @@ public class App {
 
             String field;
 
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.ENGLISH);
-
             while ((field = bufferedReader.readLine()) != null) {
                 String[] fields = bufferedReader.readLine().split("\\|");
 
-                Transaction transaction = new Transaction(LocalDate.parse(fields[0], dateFormatter), LocalTime.parse(fields[1], timeFormatter), fields[2], fields[3], Double.parseDouble(fields[4]));
+                Transaction transaction = new Transaction(LocalDate.parse(fields[0]), LocalTime.parse(fields[1]), fields[2], fields[3], Double.parseDouble(fields[4]));
 
-            }
-
-            for (Transaction transaction : transactions) {
-                System.out.println("DATE: " + transaction.getDate() + " | TIME: " + transaction.getTime() + " | DESC: " + transaction.getDescription() + " | VENDOR: " + transaction.getVendor() + " | AMOUNT: " + transaction.getAmount());
             }
 
             bufferedReader.close();
@@ -187,7 +179,40 @@ public class App {
 
     private static void makePayment() {
 
-        System.out.println("Don't forget me!");
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
+
+            System.out.println("Enter the date of the transaction: (yyyy-mm-dd)");
+            LocalDate date = promptForDate();
+
+            System.out.println("Enter the time of the transaction: (hh:mm:ss)");
+            LocalTime time = promptForTime();
+
+            System.out.println("Enter the description: ");
+            String description = promptForString();
+
+            System.out.println("Enter the vendor: ");
+            String vendor = promptForString();
+
+            System.out.println("Enter the amount: ");
+            double amount = promptForDouble();
+
+            amount *= -1;
+
+            Transaction transaction = new Transaction(date, time, description, vendor, amount);
+
+            transactions.add(transaction);
+
+            bufferedWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amount + "\n");
+
+
+            bufferedWriter.close();
+
+        } catch (IOException e) {
+            //throw new RuntimeException(e);
+            System.out.println("Unable to write to the file, please check connection and try again.");
+
+        }
 
     }
 
@@ -245,8 +270,17 @@ public class App {
             userDouble = scanner.nextLine();
 
             if (userDouble.isEmpty()) {
+
                 System.out.println("Input not recorded, please try again: ");
                 userDouble = scanner.nextLine();
+
+            }
+
+            if (userDouble.equals("0") || userDouble.contains("-")) {
+
+                System.out.println("Please enter a positive number.");
+                userDouble = scanner.nextLine();
+
             }
         } catch (NumberFormatException e) {
 
