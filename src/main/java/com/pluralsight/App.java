@@ -39,18 +39,13 @@ public class App {
             while ((field = bufferedReader.readLine()) != null) {
                 String[] fields = bufferedReader.readLine().split("\\|");
 
-                // Transaction transaction = new Transaction(LocalDateTime.parse(fields[0]), LocalDateTime.parse(fields[1]), fields[2], fields[3], Double.parseDouble(fields[4]));
-                System.out.println(LocalDate.parse(fields[0], dateFormatter));
-                System.out.println(LocalTime.parse(fields[1], timeFormatter));
-                System.out.println(fields[2]);
-                System.out.println(fields[3]);
-                System.out.println(fields[4]);
-                System.out.println("------");
+                Transaction transaction = new Transaction(LocalDate.parse(fields[0], dateFormatter), LocalTime.parse(fields[1], timeFormatter), fields[2], fields[3], Double.parseDouble(fields[4]));
+
             }
 
-//            for (Transaction transaction : transactions) {
-//                System.out.println("DATE: " + transaction.getDate() + " | TIME: " + transaction.getTime() + " | DESC: " + transaction.getDescription() + " | VENDOR: " + transaction.getVendor() + " | AMOUNT: " + transaction.getAmount());
-//            }
+            for (Transaction transaction : transactions) {
+                System.out.println("DATE: " + transaction.getDate() + " | TIME: " + transaction.getTime() + " | DESC: " + transaction.getDescription() + " | VENDOR: " + transaction.getVendor() + " | AMOUNT: " + transaction.getAmount());
+            }
 
             bufferedReader.close();
             //bufferedWriter.close();
@@ -92,18 +87,6 @@ public class App {
 
     }
 
-    private static void addDeposit() {
-
-        System.out.println("Flesh me out!");
-
-    }
-
-    private static void makePayment() {
-
-        System.out.println("Don't forget me!");
-
-    }
-
     private static void runLedgerScreen() {
         String userChoice;
 
@@ -125,11 +108,54 @@ public class App {
                 case "a" -> viewAllTransactions();
                 case "d" -> viewDeposits();
                 case "p" -> viewPayments();
-                //case "r" -> runReportsScreen();
+                case "r" -> runReportsScreen();
                 case "h" -> System.out.println("Returning to home screen...");
                 default -> System.out.println("Invalid selection, please try again from the list above.");
             }
         } while (!userChoice.equals("h"));
+
+    }
+
+    private static void runReportsScreen() {
+        String userChoice;
+
+        do {
+
+            System.out.println("""
+                    REPORTS SCREEN
+                    1) Month to Date
+                    2) Previous Month
+                    3) Year to Date
+                    4) Previous Year
+                    5) Search by Vendor
+                    0) Return to Ledger
+                    
+                    Please enter your selection: """);
+
+            userChoice = scanner.nextLine().trim().toLowerCase();
+
+            switch (userChoice) {
+                case "1" -> System.out.println("TODO: mtd");
+                case "2" -> System.out.println("TODO: prev mth");
+                case "3" -> System.out.println("TODO: ytd");
+                case "4" -> System.out.println("TODO: prev yr");
+                case "5" -> System.out.println("TODO: search by vend");
+                case "0" -> System.out.println("Returning to ledger screen...");
+                default -> System.out.println("Invalid selection, please try again from the list above.");
+            }
+        } while (!userChoice.equals("h"));
+
+    }
+
+    private static void addDeposit() {
+
+        System.out.println("Flesh me out!");
+
+    }
+
+    private static void makePayment() {
+
+        System.out.println("Don't forget me!");
 
     }
 
@@ -167,4 +193,6 @@ public class App {
         return payments;
 
     }
+
+
 }
