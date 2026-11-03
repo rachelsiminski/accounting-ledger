@@ -78,9 +78,9 @@ public class App {
             userChoice = scanner.nextLine().trim().toLowerCase();
 
             switch (userChoice) {
-                case "d" -> System.out.println("TODO: addDeposit()");
-                case "p" -> System.out.println("TODO: makePayment()");
-                case "l" -> System.out.println("TODO: runLedgerScreen()");
+                case "d" -> addDeposit();
+                case "p" -> makePayment();
+                case "l" -> runLedgerScreen();
                 case "x" -> System.out.println("Goodbye!");
                 default -> System.out.println("Invalid selection, please try again from the list above.");
             }
@@ -90,7 +90,52 @@ public class App {
 
     private static void addDeposit() {
 
-        System.out.println("Enter the ");
+        System.out.println("Flesh me out!");
+
+    }
+
+    private static void makePayment() {
+
+        System.out.println("Don't forget me!");
+
+    }
+
+    private static void runLedgerScreen() {
+        String userChoice;
+
+        do {
+
+            System.out.println("""
+                    LEDGER SCREEN
+                    A) View All Transactions
+                    D) View Deposits
+                    P) View Payments
+                    R) Reports
+                    H) Return to Home
+                    
+                    Please enter your selection: """);
+
+            userChoice = scanner.nextLine().trim().toLowerCase();
+
+            switch (userChoice) {
+                case "a" -> viewAllTransactions();
+                //case "d" -> viewDeposits();
+                //case "p" -> viewPayments;
+                //case "r" -> runReportsScreen();
+                case "h" -> System.out.println("Returning to home screen...");
+                default -> System.out.println("Invalid selection, please try again from the list above.");
+            }
+        } while (!userChoice.equals("h"));
+
+    }
+
+    private static ArrayList<Transaction> viewAllTransactions() {
+        //FIXME: flesh out
+//        for (Transaction transaction : transactions) {
+//            return transaction;
+//        }
+
+        return transactions;
     }
 
 }
