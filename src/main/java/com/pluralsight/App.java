@@ -27,7 +27,6 @@ public class App {
 //            String fileName = scanner.nextLine();
 
             BufferedReader bufferedReader = new BufferedReader(new FileReader("transactions.csv"));
-            // BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
 
             bufferedReader.readLine();
 
@@ -54,9 +53,6 @@ public class App {
             //throw new RuntimeException(e);
             System.out.println("Unable to read the file, please check the location and try again.");
 
-        } catch (IOException e) {
-            //throw new RuntimeException(e);
-            System.out.println("Unable to write to the file, please check connection and try again.");
         }
     }
 
@@ -149,7 +145,18 @@ public class App {
 
     private static void addDeposit() {
 
-        System.out.println("Flesh me out!");
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
+
+
+
+
+        } catch (IOException e) {
+            //throw new RuntimeException(e);
+            System.out.println("Unable to write to the file, please check connection and try again.");
+
+        }
+
 
     }
 
@@ -194,5 +201,59 @@ public class App {
 
     }
 
+    private static String promptForString() {
+        String userString = scanner.nextLine();
 
+        if (userString.isEmpty()) {
+            System.out.println("Input not recorded, please try again: ");
+            userString = scanner.nextLine();
+        }
+
+        return userString;
+
+    }
+
+    private static double promptForDouble() {
+        String userDouble = scanner.nextLine();
+
+        if (userDouble.isEmpty()) {
+            System.out.println("Input not recorded, please try again: ");
+            userDouble = scanner.nextLine();
+        }
+
+        return Double.parseDouble(userDouble);
+
+    }
+
+    private static LocalDate promptForDate() {
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        String userDate = scanner.nextLine();
+
+        if (userDate.isEmpty()) {
+
+            System.out.println("Input not recorded, please try again: ");
+            userDate = scanner.nextLine();
+
+        }
+
+        return LocalDate.parse(userDate, dateFormatter);
+    }
+
+    private static LocalTime promptForTime() {
+
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        String userTime = scanner.nextLine();
+
+        if (userTime.isEmpty()) {
+
+            System.out.println("Input not recorded, please try again: ");
+            userTime = scanner.nextLine();
+
+        }
+
+        return LocalTime.parse(userTime, timeFormatter);
+    }
 }
