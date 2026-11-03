@@ -21,7 +21,7 @@ public class App {
 //            String fileName = scanner.nextLine();
 
             BufferedReader bufferedReader = new BufferedReader(new FileReader("transactions.csv"));
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
+            // BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
 
             bufferedReader.readLine();
 
@@ -47,7 +47,7 @@ public class App {
 //            }
 
             bufferedReader.close();
-            bufferedWriter.close();
+            //bufferedWriter.close();
 
         } catch (FileNotFoundException e) {
             //throw new RuntimeException(e);
@@ -57,6 +57,40 @@ public class App {
             //throw new RuntimeException(e);
             System.out.println("Unable to write to the file, please check connection and try again.");
         }
+
+        runHomeScreen();
+    }
+
+    private static void runHomeScreen() {
+        String userChoice;
+
+        do {
+
+            System.out.println("""
+                    HOME SCREEN
+                    D) Add Deposit
+                    P) Make Payment
+                    L) Ledger
+                    X) Exit
+                    
+                    Please enter your selection: """);
+
+            userChoice = scanner.nextLine().trim().toLowerCase();
+
+            switch (userChoice) {
+                case "d" -> System.out.println("TODO: addDeposit()");
+                case "p" -> System.out.println("TODO: makePayment()");
+                case "l" -> System.out.println("TODO: runLedgerScreen()");
+                case "x" -> System.out.println("Goodbye!");
+                default -> System.out.println("Invalid selection, please try again from the list above.");
+            }
+        } while (!userChoice.equals("x"));
+
+    }
+
+    private static void addDeposit() {
+
+        System.out.println("Enter the ");
     }
 
 }
