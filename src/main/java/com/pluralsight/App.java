@@ -129,9 +129,9 @@ public class App {
 
             switch (userChoice) {
                 case "1" -> viewMonthToDate();
-                case "2" -> System.out.println("TODO: prev mth");
+                case "2" -> viewPreviousMonth();
                 case "3" -> viewYearToDate();
-                case "4" -> System.out.println("TODO: prev yr");
+                case "4" -> viewPreviousYear();
                 case "5" -> System.out.println("TODO: search by vend");
                 case "0" -> System.out.println("Returning to ledger screen...");
                 default -> System.out.println("Invalid selection, please try again from the list above.");
@@ -270,19 +270,15 @@ public class App {
 
     }
 
-    private static ArrayList<Transaction> viewPreviousYear() {
+    private static void viewPreviousYear() {
 
-        System.out.println("FIXME");
-
-        return transactions;
+        displayTransactions(filterPreviousYear());
 
     }
 
-    private static ArrayList<Transaction> searchByVendor() {
+    private static void searchByVendor() {
 
-        System.out.println("FIXME");
-
-        return transactions;
+        displayTransactions(filterByVendor());
 
     }
 
@@ -467,10 +463,30 @@ public class App {
         return previousYearTransactions;
     }
 
+    private static ArrayList<Transaction> filterByVendor() {
+
+        ArrayList<Transaction> vendors = new ArrayList<>();
+
+        System.out.println("Enter the vendor you'd like to search by: ");
+        String vendor = promptForString();
+
+        for (Transaction transaction : transactions) {
+
+            if (transaction.getVendor().equals(vendor)) {
+
+                vendors.add(transaction);
+            }
+        }
+
+        return vendors;
+
+    }
+
     private static void displayTransactions(ArrayList<Transaction> transactions) {
 
         //
 
+        pressEnterToContinue();
     }
 
     private static void pressEnterToContinue() {
