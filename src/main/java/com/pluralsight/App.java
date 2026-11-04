@@ -16,8 +16,11 @@ public class App {
 
     public static void main(String[] args) {
 
+        displayBanner();
         loadTransactions();
         runHomeScreen();
+
+        scanner.close();
 
     }
 
@@ -34,11 +37,16 @@ public class App {
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
-                String[] fields = line.split("\\|");
 
-                Transaction transaction = new Transaction(LocalDate.parse(fields[0]), LocalTime.parse(fields[1]), fields[2], fields[3], Double.parseDouble(fields[4]));
+                if (!line.isBlank()) {
 
-                transactions.add(transaction);
+                    String[] fields = line.split("\\|");
+
+                    Transaction transaction = new Transaction(LocalDate.parse(fields[0]), LocalTime.parse(fields[1]), fields[2], fields[3], Double.parseDouble(fields[4]));
+
+                    transactions.add(transaction);
+
+                }
 
             }
 
@@ -52,6 +60,13 @@ public class App {
             System.out.println("Error reading file");
             //throw new RuntimeException(e);
         }
+    }
+
+    private static void displayBanner() {
+
+        System.out.println("""
+                HELLO""");
+
     }
 
     private static void runHomeScreen() {
@@ -160,9 +175,9 @@ public class App {
 
             transactions.add(transaction);
 
-            System.out.println(transaction.getTime());
-
             bufferedWriter.write(dateNow + "|" + timeNow + "|" + description + "|" + vendor + "|" + amount + "\n");
+
+            System.out.printf("Deposit recorded: %s | %s | $ %.2f%n", transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
 
             bufferedWriter.close();
 
@@ -199,6 +214,7 @@ public class App {
 
             bufferedWriter.write(dateNow + "|" + timeNow + "|" + description + "|" + vendor + "|" + amount + "\n");
 
+            System.out.printf("Payment recorded: %s | %s | $ %.2f%n", transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
 
             bufferedWriter.close();
 
@@ -291,30 +307,34 @@ public class App {
     private static double promptForDouble() {
         String amount = null;
 
-        try {
-            amount = scanner.nextLine();
-
-            if (amount.isEmpty()) {
-
-                System.out.println("Input not recorded, please try again: ");
+        while (true) {
+            try {
                 amount = scanner.nextLine();
 
+                if (amount.isEmpty()) {
+
+                    System.out.println("Input not recorded, please try again: ");
+                    amount = scanner.nextLine();
+
+                }
+
+                if (amount.equals("0") || amount.contains("-")) {
+
+                    System.out.println("Please enter a positive number.");
+                    amount = scanner.nextLine();
+
+                }
+
+                return Double.parseDouble(amount);
+
+            } catch (NumberFormatException e) {
+
+                System.out.println("Please enter a number");
+                //throw new RuntimeException(e);
+
             }
-
-            if (amount.equals("0") || amount.contains("-")) {
-
-                System.out.println("Please enter a positive number.");
-                amount = scanner.nextLine();
-
-            }
-        } catch (NumberFormatException e) {
-
-            System.out.println("Please enter a number");
-            //throw new RuntimeException(e);
 
         }
-
-        return Double.parseDouble(amount);
 
     }
 
@@ -441,7 +461,13 @@ public class App {
             if (transaction.getVendor().toLowerCase().equals(vendor)) {
 
                 vendors.add(transaction);
+
             }
+
+        }
+
+        if (vendors.isEmpty()) {
+            System.out.println("There are no transactions that match this vendor. Please try again.");
         }
 
         return vendors;
@@ -452,14 +478,18 @@ public class App {
         // Used Claude to help me with formatting so each section is a set size
         // This method is drafted using Claude, revised by me for accuracy and judgment
 
-        System.out.printf("%40s", "TRANSACTIONS");
-        System.out.println();
-        System.out.println();
-        System.out.printf("|%s|%s|%s|%s|%n", center("DATE", 12), center("DESCRIPTION", 26), center("VENDOR", 20), center("AMOUNT", 13));
+        if (!transactions.isEmpty()) {
 
-        for (Transaction transaction : transactions) {
+            System.out.printf("%40s", "TRANSACTIONS");
+            System.out.println();
+            System.out.println();
+            System.out.printf("|%s|%s|%s|%s|%n", center("DATE", 12), center("DESCRIPTION", 26), center("VENDOR", 20), center("AMOUNT", 14));
 
-            System.out.printf("|%s|%s|%s|$%s|%n", center(transaction.getDate().toString(), 12), center(transaction.getDescription(), 26), center(transaction.getVendor(), 20), center(String.format("%.2f", transaction.getAmount()), 12));
+            for (Transaction transaction : transactions) {
+
+                System.out.printf("|%s|%s|%s| $%s|%n", center(transaction.getDate().toString(), 12), center(transaction.getDescription(), 26), center(transaction.getVendor(), 20), center(String.format("%.2f", transaction.getAmount()), 12));
+
+            }
 
         }
 
