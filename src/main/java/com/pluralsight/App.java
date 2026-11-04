@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class App {
@@ -30,10 +29,10 @@ public class App {
 
             bufferedReader.readLine();
 
-            String field;
+            String line;
 
-            while ((field = bufferedReader.readLine()) != null) {
-                String[] fields = bufferedReader.readLine().split("\\|");
+            while ((line = bufferedReader.readLine()) != null) {
+                String[] fields = line.split("\\|");
 
                 Transaction transaction = new Transaction(LocalDate.parse(fields[0]), LocalTime.parse(fields[1]), fields[2], fields[3], Double.parseDouble(fields[4]));
 
@@ -42,7 +41,6 @@ public class App {
             }
 
             bufferedReader.close();
-            //bufferedWriter.close();
 
         } catch (FileNotFoundException e) {
             //throw new RuntimeException(e);
@@ -137,7 +135,7 @@ public class App {
                 case "0" -> System.out.println("Returning to ledger screen...");
                 default -> System.out.println("Invalid selection, please try again from the list above.");
             }
-        } while (!userChoice.equals("h"));
+        } while (!userChoice.equals("0"));
 
     }
 
@@ -398,12 +396,12 @@ public class App {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM");
 
-        System.out.println(now.format(formatter).equals(transactions.get(0).getDate().format(formatter)));
+        //System.out.println(now.format(formatter).equals(transactions.get(0).getDate().format(formatter)));
         //System.out.println(transactions);
-
+        System.out.println(transactions.toArray().length);
         for (Transaction transaction : transactions) {
             //System.out.println(transaction.getDate());
-            if (transaction.getDate() == now) {
+            if (now.format(formatter).equals(transactions.get(0).getDate().format(formatter))) {
                 System.out.println("YEs");
             }
         }
