@@ -214,7 +214,7 @@ public class App {
 
     private static void viewAllTransactions() {
 
-        displayTransactions(transactions);
+        displayTransactionsAsTable(transactions);
 
         pressEnterToContinue();
 
@@ -222,7 +222,7 @@ public class App {
 
     private static void viewDeposits() {
 
-        displayTransactions(filterDeposits());
+        displayTransactionsAsTable(filterDeposits());
 
         pressEnterToContinue();
 
@@ -230,7 +230,7 @@ public class App {
 
     private static void viewPayments() {
 
-        displayTransactions(filterPayments());
+        displayTransactionsAsTable(filterPayments());
 
         pressEnterToContinue();
 
@@ -238,7 +238,7 @@ public class App {
 
     private static void viewMonthToDate() {
 
-        displayTransactions(filterMonthToDate());
+        displayTransactionsAsTable(filterMonthToDate());
 
         pressEnterToContinue();
 
@@ -246,7 +246,7 @@ public class App {
 
     private static void viewPreviousMonth() {
 
-        displayTransactions(filterPreviousMonth());
+        displayTransactionsAsTable(filterPreviousMonth());
 
         pressEnterToContinue();
 
@@ -254,7 +254,7 @@ public class App {
 
     private static void viewYearToDate() {
 
-        displayTransactions(filterYearToDate());
+        displayTransactionsAsTable(filterYearToDate());
 
         pressEnterToContinue();
 
@@ -262,7 +262,7 @@ public class App {
 
     private static void viewPreviousYear() {
 
-        displayTransactions(filterPreviousYear());
+        displayTransactionsAsTable(filterPreviousYear());
 
         pressEnterToContinue();
 
@@ -270,7 +270,7 @@ public class App {
 
     private static void searchByVendor() {
 
-        displayTransactions(filterByVendor());
+        displayTransactionsAsTable(filterByVendor());
 
         pressEnterToContinue();
 
@@ -281,7 +281,7 @@ public class App {
 
         if (userString.isEmpty()) {
             System.out.println("Input not recorded, please try again: ");
-            userString = scanner.nextLine();
+            userString = scanner.nextLine().trim().toLowerCase();
         }
 
         return userString;
@@ -438,7 +438,7 @@ public class App {
 
         for (Transaction transaction : transactions) {
 
-            if (transaction.getVendor().equals(vendor)) {
+            if (transaction.getVendor().toLowerCase().equals(vendor)) {
 
                 vendors.add(transaction);
             }
@@ -448,9 +448,38 @@ public class App {
 
     }
 
-    private static void displayTransactions(ArrayList<Transaction> transactions) {
+    private static void displayTransactionsAsTable(ArrayList<Transaction> transactions) {
+        // Used Claude to help me with formatting so each section is a set size
+        // This method is drafted using Claude, revised by me for accuracy and judgment
 
-        //
+        System.out.printf("%40s", "TRANSACTIONS");
+        System.out.println();
+        System.out.println();
+        System.out.printf("|%s|%s|%s|%s|%n", center("DATE", 12), center("DESCRIPTION", 26), center("VENDOR", 20), center("AMOUNT", 13));
+
+        for (Transaction transaction : transactions) {
+
+            System.out.printf("|%s|%s|%s|$%s|%n", center(transaction.getDate().toString(), 12), center(transaction.getDescription(), 26), center(transaction.getVendor(), 20), center(String.format("%.2f", transaction.getAmount()), 12));
+
+        }
+
+    }
+
+    private static String center(String text, int width) {
+        // Used Claude to help me with formatting so each section is a set size
+        // This method is drafted using Claude, revised by me for accuracy and judgment
+        int leftover = width - text.length();
+
+        if (leftover <= 0) {
+
+            return text;
+
+        }
+
+        int left = leftover / 2;
+        int right = leftover - left;
+
+        return " ".repeat(left) + text + " ".repeat(right);
 
     }
 
