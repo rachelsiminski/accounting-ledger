@@ -389,31 +389,39 @@ public class App {
 
     private static ArrayList<Transaction> filterMonthToDate() {
 
-        System.out.println();
+        ArrayList<Transaction> monthToDateTransactions = new ArrayList<>();
+
         System.out.println(" - Month to Date - ");
 
         LocalDate now = LocalDate.now();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM");
+        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MM");
+        DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern("yyyy");
 
-        //System.out.println(now.format(formatter).equals(transactions.get(0).getDate().format(formatter)));
-        //System.out.println(transactions);
-        System.out.println(transactions.toArray().length);
         for (Transaction transaction : transactions) {
-            //System.out.println(transaction.getDate());
-            if (now.format(formatter).equals(transactions.get(0).getDate().format(formatter))) {
-                System.out.println("YEs");
+
+            if (now.format(monthFormatter).equals(transaction.getDate().format(monthFormatter)) && now.format(yearFormatter).equals(transaction.getDate().format(yearFormatter))) {
+
+                monthToDateTransactions.add(transaction);
+
             }
+
         }
 
-
-        return transactions;
+        return monthToDateTransactions;
 
     }
 
     private static void displayTransactions(ArrayList<Transaction> transactions) {
 
-        System.out.println("TODO");
+        //
+
+    }
+
+    private static void pressEnterToContinue() {
+        System.out.println();
+        System.out.println("Press enter to return to the menu...");
+        scanner.nextLine();
     }
 
 }
