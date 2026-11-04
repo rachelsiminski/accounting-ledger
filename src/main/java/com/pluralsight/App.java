@@ -132,7 +132,7 @@ public class App {
                 case "2" -> viewPreviousMonth();
                 case "3" -> viewYearToDate();
                 case "4" -> viewPreviousYear();
-                case "5" -> System.out.println("TODO: search by vend");
+                case "5" -> searchByVendor();
                 case "0" -> System.out.println("Returning to ledger screen...");
                 default -> System.out.println("Invalid selection, please try again from the list above.");
             }
@@ -217,38 +217,21 @@ public class App {
 
     }
 
-    private static ArrayList<Transaction> viewAllTransactions() {
-        //FIXME: flesh out
-//        for (Transaction transaction : transactions) {
-//            return transaction;
-//        }
+    private static void viewAllTransactions() {
 
-        return transactions;
-    }
-
-    private static ArrayList<Transaction> viewDeposits() {
-        ArrayList<Transaction> deposits = new ArrayList<>();
-
-        for (Transaction transaction : transactions) {
-            if (transaction.getAmount() > 0) {
-                deposits.add(transaction);
-            }
-        }
-
-        return deposits;
+        displayTransactions(transactions);
 
     }
 
-    private static ArrayList<Transaction> viewPayments() {
-        ArrayList<Transaction> payments = new ArrayList<>();
+    private static void viewDeposits() {
 
-        for (Transaction transaction : transactions) {
-            if (transaction.getAmount() < 0) {
-                payments.add(transaction);
-            }
-        }
+        displayTransactions(filterDeposits());
 
-        return payments;
+    }
+
+    private static void viewPayments() {
+
+        displayTransactions(filterPayments());
 
     }
 
@@ -378,6 +361,34 @@ public class App {
         }
 
         return LocalTime.parse(userTime, timeFormatter);
+    }
+
+    private static ArrayList<Transaction> filterDeposits() {
+
+        ArrayList<Transaction> deposits = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getAmount() > 0) {
+                deposits.add(transaction);
+            }
+        }
+
+        return deposits;
+
+    }
+
+    private static ArrayList<Transaction> filterPayments() {
+
+        ArrayList<Transaction> payments = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            if (transaction.getAmount() < 0) {
+                payments.add(transaction);
+            }
+        }
+
+        return payments;
+
     }
 
     private static ArrayList<Transaction> filterMonthToDate() {
