@@ -37,6 +37,8 @@ public class App {
 
                 Transaction transaction = new Transaction(LocalDate.parse(fields[0]), LocalTime.parse(fields[1]), fields[2], fields[3], Double.parseDouble(fields[4]));
 
+                transactions.add(transaction);
+
             }
 
             bufferedReader.close();
@@ -127,7 +129,7 @@ public class App {
             userChoice = scanner.nextLine().trim().toLowerCase();
 
             switch (userChoice) {
-                case "1" -> System.out.println("TODO: mtd");
+                case "1" -> viewMonthToDate();
                 case "2" -> System.out.println("TODO: prev mth");
                 case "3" -> System.out.println("TODO: ytd");
                 case "4" -> System.out.println("TODO: prev yr");
@@ -251,11 +253,9 @@ public class App {
 
     }
 
-    private static ArrayList<Transaction> viewMonthToDate() {
+    private static void viewMonthToDate() {
 
-        System.out.println("FIXME");
-
-        return transactions;
+        displayTransactions(filterMonthToDate());
 
     }
 
@@ -388,4 +388,34 @@ public class App {
 
         return LocalTime.parse(userTime, timeFormatter);
     }
+
+    private static ArrayList<Transaction> filterMonthToDate() {
+
+        System.out.println();
+        System.out.println(" - Month to Date - ");
+
+        LocalDate now = LocalDate.now();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM");
+
+        System.out.println(now.format(formatter).equals(transactions.get(0).getDate().format(formatter)));
+        //System.out.println(transactions);
+
+        for (Transaction transaction : transactions) {
+            //System.out.println(transaction.getDate());
+            if (transaction.getDate() == now) {
+                System.out.println("YEs");
+            }
+        }
+
+
+        return transactions;
+
+    }
+
+    private static void displayTransactions(ArrayList<Transaction> transactions) {
+
+        System.out.println("TODO");
+    }
+
 }
