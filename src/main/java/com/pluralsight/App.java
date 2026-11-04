@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class App {
     private static final Scanner scanner = new Scanner(System.in);
     private static final ArrayList<Transaction> transactions = new ArrayList<>();
+    private static LocalDate now = LocalDate.now();
 
     public static void main(String[] args) {
 
@@ -129,7 +130,7 @@ public class App {
             switch (userChoice) {
                 case "1" -> viewMonthToDate();
                 case "2" -> System.out.println("TODO: prev mth");
-                case "3" -> System.out.println("TODO: ytd");
+                case "3" -> viewYearToDate();
                 case "4" -> System.out.println("TODO: prev yr");
                 case "5" -> System.out.println("TODO: search by vend");
                 case "0" -> System.out.println("Returning to ledger screen...");
@@ -257,19 +258,15 @@ public class App {
 
     }
 
-    private static ArrayList<Transaction> viewPreviousMonth() {
+    private static void viewPreviousMonth() {
 
-        System.out.println("FIXME");
-
-        return transactions;
+        displayTransactions(filterPreviousMonth());
 
     }
 
-    private static ArrayList<Transaction> viewYearToDate() {
+    private static void viewYearToDate() {
 
-        System.out.println("FIXME");
-
-        return transactions;
+        displayTransactions(filterYearToDate());
 
     }
 
@@ -393,14 +390,10 @@ public class App {
 
         System.out.println(" - Month to Date - ");
 
-        LocalDate now = LocalDate.now();
-
-        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MM");
-        DateTimeFormatter yearFormatter = DateTimeFormatter.ofPattern("yyyy");
 
         for (Transaction transaction : transactions) {
 
-            if (now.format(monthFormatter).equals(transaction.getDate().format(monthFormatter)) && now.format(yearFormatter).equals(transaction.getDate().format(yearFormatter))) {
+            if (now.getMonth() == transaction.getDate().getMonth() && now.getYear() == transaction.getDate().getYear()) {
 
                 monthToDateTransactions.add(transaction);
 
@@ -410,6 +403,68 @@ public class App {
 
         return monthToDateTransactions;
 
+    }
+
+    private static ArrayList<Transaction> filterPreviousMonth() {
+
+        ArrayList<Transaction> previousMonthTransactions = new ArrayList<>();
+
+        LocalDate previousMonth = LocalDate.now().minusMonths(1);
+
+        System.out.println(" - Previous Month - ");
+
+        for (Transaction transaction : transactions) {
+
+            if (previousMonth.getMonth() == transaction.getDate().getMonth() && previousMonth.getYear() == transaction.getDate().getYear()) {
+
+                previousMonthTransactions.add(transaction);
+
+            }
+        }
+
+        return previousMonthTransactions;
+    }
+
+    private static ArrayList<Transaction> filterYearToDate() {
+
+        ArrayList<Transaction> yearToDateTransactions = new ArrayList<>();
+
+        System.out.println(" - Year to Date - ");
+
+
+        for (Transaction transaction : transactions) {
+
+            if (now.getYear() == transaction.getDate().getYear()) {
+
+                yearToDateTransactions.add(transaction);
+
+            }
+
+        }
+
+        return yearToDateTransactions;
+
+    }
+
+    private static ArrayList<Transaction> filterPreviousYear() {
+
+        ArrayList<Transaction> previousYearTransactions = new ArrayList<>();
+
+        LocalDate previousYear = LocalDate.now().minusYears(1);
+
+        System.out.println(" - Previous Year - ");
+
+        for (Transaction transaction : transactions) {
+
+            if (previousYear.getYear() == transaction.getDate().getYear()) {
+
+                previousYearTransactions.add(transaction);
+
+            }
+
+        }
+
+        return previousYearTransactions;
     }
 
     private static void displayTransactions(ArrayList<Transaction> transactions) {
