@@ -1,7 +1,6 @@
 package com.pluralsight;
 
 import java.io.*;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -11,7 +10,9 @@ import java.util.Scanner;
 public class App {
     private static final Scanner scanner = new Scanner(System.in);
     private static final ArrayList<Transaction> transactions = new ArrayList<>();
-    private static LocalDate now = LocalDate.now();
+    private static final LocalDate dateNow = LocalDate.now();
+    private static final LocalTime timeNow = LocalTime.now();
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public static void main(String[] args) {
 
@@ -143,13 +144,8 @@ public class App {
     private static void addDeposit() {
 
         try {
+
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
-
-            System.out.println("Enter the date of the transaction: (yyyy-mm-dd)");
-            LocalDate date = promptForDate();
-
-            System.out.println("Enter the time of the transaction: (hh:mm:ss)");
-            LocalTime time = promptForTime();
 
             System.out.println("Enter the description: ");
             String description = promptForString();
@@ -160,12 +156,13 @@ public class App {
             System.out.println("Enter the amount: ");
             double amount = promptForDouble();
 
-            Transaction transaction = new Transaction(date, time, description, vendor, amount);
+            Transaction transaction = new Transaction(dateNow, LocalTime.parse(timeNow.format(formatter)), description, vendor, amount);
 
             transactions.add(transaction);
 
-            bufferedWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amount + "\n");
+            System.out.println(transaction.getTime());
 
+            bufferedWriter.write(dateNow + "|" + timeNow + "|" + description + "|" + vendor + "|" + amount + "\n");
 
             bufferedWriter.close();
 
@@ -181,13 +178,8 @@ public class App {
     private static void makePayment() {
 
         try {
+
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
-
-            System.out.println("Enter the date of the transaction: (yyyy-mm-dd)");
-            LocalDate date = promptForDate();
-
-            System.out.println("Enter the time of the transaction: (hh:mm:ss)");
-            LocalTime time = promptForTime();
 
             System.out.println("Enter the description: ");
             String description = promptForString();
@@ -200,11 +192,11 @@ public class App {
 
             amount *= -1;
 
-            Transaction transaction = new Transaction(date, time, description, vendor, amount);
+            Transaction transaction = new Transaction(dateNow, LocalTime.parse(timeNow.format(formatter)), description, vendor, amount);
 
             transactions.add(transaction);
 
-            bufferedWriter.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amount + "\n");
+            bufferedWriter.write(dateNow + "|" + timeNow + "|" + description + "|" + vendor + "|" + amount + "\n");
 
 
             bufferedWriter.close();
@@ -278,22 +270,22 @@ public class App {
     }
 
     private static double promptForDouble() {
-        String userDouble = null;
+        String amount = null;
 
         try {
-            userDouble = scanner.nextLine();
+            amount = scanner.nextLine();
 
-            if (userDouble.isEmpty()) {
+            if (amount.isEmpty()) {
 
                 System.out.println("Input not recorded, please try again: ");
-                userDouble = scanner.nextLine();
+                amount = scanner.nextLine();
 
             }
 
-            if (userDouble.equals("0") || userDouble.contains("-")) {
+            if (amount.equals("0") || amount.contains("-")) {
 
                 System.out.println("Please enter a positive number.");
-                userDouble = scanner.nextLine();
+                amount = scanner.nextLine();
 
             }
         } catch (NumberFormatException e) {
@@ -303,64 +295,8 @@ public class App {
 
         }
 
-        return Double.parseDouble(userDouble);
+        return Double.parseDouble(amount);
 
-    }
-
-    private static LocalDate promptForDate() {
-
-        DateTimeFormatter dateFormatter = null;
-        String userDate = null;
-
-        try {
-
-            dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-            userDate = scanner.nextLine();
-
-            if (userDate.isEmpty()) {
-
-                System.out.println("Input not recorded, please try again: ");
-                userDate = scanner.nextLine();
-
-            }
-
-        } catch (DateTimeException e) {
-
-            System.out.println("Please enter a date in the format yyyy-mm-dd");
-            //throw new RuntimeException(e);
-
-        }
-
-        return LocalDate.parse(userDate, dateFormatter);
-    }
-
-    private static LocalTime promptForTime() {
-
-        DateTimeFormatter timeFormatter = null;
-        String userTime = null;
-
-        try {
-
-            timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-            userTime = scanner.nextLine();
-
-            if (userTime.isEmpty()) {
-
-                System.out.println("Input not recorded, please try again: ");
-                userTime = scanner.nextLine();
-
-            }
-
-        } catch (Exception e) {
-
-            System.out.println("Please enter the time in the format hh:mm:ss");
-            //throw new RuntimeException(e);
-
-        }
-
-        return LocalTime.parse(userTime, timeFormatter);
     }
 
     private static ArrayList<Transaction> filterDeposits() {
@@ -400,7 +336,7 @@ public class App {
 
         for (Transaction transaction : transactions) {
 
-            if (now.getMonth() == transaction.getDate().getMonth() && now.getYear() == transaction.getDate().getYear()) {
+            if (dateNow.getMonth() == transaction.getDate().getMonth() && dateNow.getYear() == transaction.getDate().getYear()) {
 
                 monthToDateTransactions.add(transaction);
 
@@ -441,7 +377,7 @@ public class App {
 
         for (Transaction transaction : transactions) {
 
-            if (now.getYear() == transaction.getDate().getYear()) {
+            if (dateNow.getYear() == transaction.getDate().getYear()) {
 
                 yearToDateTransactions.add(transaction);
 
