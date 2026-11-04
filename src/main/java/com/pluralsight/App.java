@@ -172,6 +172,7 @@ public class App {
 
         }
 
+        pressEnterToContinue();
 
     }
 
@@ -207,11 +208,15 @@ public class App {
 
         }
 
+        pressEnterToContinue();
+
     }
 
     private static void viewAllTransactions() {
 
         displayTransactions(transactions);
+
+        pressEnterToContinue();
 
     }
 
@@ -219,11 +224,15 @@ public class App {
 
         displayTransactions(filterDeposits());
 
+        pressEnterToContinue();
+
     }
 
     private static void viewPayments() {
 
         displayTransactions(filterPayments());
+
+        pressEnterToContinue();
 
     }
 
@@ -231,11 +240,15 @@ public class App {
 
         displayTransactions(filterMonthToDate());
 
+        pressEnterToContinue();
+
     }
 
     private static void viewPreviousMonth() {
 
         displayTransactions(filterPreviousMonth());
+
+        pressEnterToContinue();
 
     }
 
@@ -243,17 +256,23 @@ public class App {
 
         displayTransactions(filterYearToDate());
 
+        pressEnterToContinue();
+
     }
 
     private static void viewPreviousYear() {
 
         displayTransactions(filterPreviousYear());
 
+        pressEnterToContinue();
+
     }
 
     private static void searchByVendor() {
 
         displayTransactions(filterByVendor());
+
+        pressEnterToContinue();
 
     }
 
@@ -433,7 +452,6 @@ public class App {
 
         //
 
-        pressEnterToContinue();
     }
 
     private static void pressEnterToContinue() {
