@@ -475,7 +475,7 @@ public class App {
 
         for (Transaction transaction : transactions) {
 
-            if (transaction.getVendor().toLowerCase().equals(vendor)) {
+            if (transaction.getVendor().equalsIgnoreCase(vendor)) {
 
                 vendors.add(transaction);
 
@@ -484,7 +484,9 @@ public class App {
         }
 
         if (vendors.isEmpty()) {
+
             System.out.println("There are no transactions that match this vendor. Please try again.");
+
         }
 
         return vendors;
