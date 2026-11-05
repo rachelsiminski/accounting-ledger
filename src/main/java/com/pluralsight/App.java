@@ -256,6 +256,8 @@ public class App {
 
     private static void viewDeposits() {
 
+        System.out.println("                                     - Deposits -");
+
         displayTransactionsAsTable(filterDeposits());
 
         pressEnterToContinue();
@@ -263,6 +265,8 @@ public class App {
     }
 
     private static void viewPayments() {
+
+        System.out.println("                                     - Payments -");
 
         displayTransactionsAsTable(filterPayments());
 
@@ -272,6 +276,8 @@ public class App {
 
     private static void viewMonthToDate() {
 
+        System.out.println("                                     - Month to Date -");
+
         displayTransactionsAsTable(filterMonthToDate());
 
         pressEnterToContinue();
@@ -279,6 +285,8 @@ public class App {
     }
 
     private static void viewPreviousMonth() {
+
+        System.out.println("                                     - Previous Month -");
 
         displayTransactionsAsTable(filterPreviousMonth());
 
@@ -288,6 +296,8 @@ public class App {
 
     private static void viewYearToDate() {
 
+        System.out.println("                                     - Year to Date -");
+
         displayTransactionsAsTable(filterYearToDate());
 
         pressEnterToContinue();
@@ -296,6 +306,8 @@ public class App {
 
     private static void viewPreviousYear() {
 
+        System.out.println("                                     - Previous Year -");
+
         displayTransactionsAsTable(filterPreviousYear());
 
         pressEnterToContinue();
@@ -303,6 +315,8 @@ public class App {
     }
 
     private static void searchByVendor() {
+
+        System.out.println("                                     - Search by Vendor -");
 
         displayTransactionsAsTable(filterByVendor());
 
@@ -418,9 +432,6 @@ public class App {
         LocalDate dateNow = LocalDate.now();
         LocalTime timeNow = LocalTime.now();
 
-        System.out.println(" - Month to Date - ");
-
-
         for (Transaction transaction : transactions) {
 
             if (dateNow.getMonth() == transaction.getDate().getMonth() && dateNow.getYear() == transaction.getDate().getYear()) {
@@ -446,8 +457,6 @@ public class App {
         ArrayList<Transaction> previousMonthTransactions = new ArrayList<>();
 
         LocalDate previousMonth = LocalDate.now().minusMonths(1);
-
-        System.out.println(" - Previous Month - ");
 
         for (Transaction transaction : transactions) {
 
@@ -475,9 +484,6 @@ public class App {
         LocalDate dateNow = LocalDate.now();
         LocalTime timeNow = LocalTime.now();
 
-        System.out.println(" - Year to Date - ");
-
-
         for (Transaction transaction : transactions) {
 
             if (dateNow.getYear() == transaction.getDate().getYear()) {
@@ -503,8 +509,6 @@ public class App {
         ArrayList<Transaction> previousYearTransactions = new ArrayList<>();
 
         LocalDate previousYear = LocalDate.now().minusYears(1);
-
-        System.out.println(" - Previous Year - ");
 
         for (Transaction transaction : transactions) {
 
