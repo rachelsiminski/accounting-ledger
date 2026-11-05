@@ -12,8 +12,6 @@ public class App {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static final ArrayList<Transaction> transactions = new ArrayList<>();
-    private static final LocalDate dateNow = LocalDate.now();
-    private static final LocalTime timeNow = LocalTime.now();
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public static void main(String[] args) {
@@ -97,7 +95,7 @@ public class App {
                 case "p" -> makePayment();
                 case "l" -> runLedgerScreen();
                 case "x" -> System.out.println("Goodbye!");
-                default -> System.out.println("Invalid selection, please try again from the list above.");
+                default -> System.out.println("Invalid selection, please try again from the list above.\n");
             }
 
         } while (!userChoice.equals("x"));
@@ -126,8 +124,8 @@ public class App {
                 case "d" -> viewDeposits();
                 case "p" -> viewPayments();
                 case "r" -> runReportsScreen();
-                case "h" -> System.out.println("Returning to home screen...");
-                default -> System.out.println("Invalid selection, please try again from the list above.");
+                case "h" -> System.out.println("Returning to home screen...\n");
+                default -> System.out.println("Invalid selection, please try again from the list above.\n");
             }
         } while (!userChoice.equals("h"));
 
@@ -157,8 +155,8 @@ public class App {
                 case "3" -> viewYearToDate();
                 case "4" -> viewPreviousYear();
                 case "5" -> searchByVendor();
-                case "0" -> System.out.println("Returning to ledger screen...");
-                default -> System.out.println("Invalid selection, please try again from the list above.");
+                case "0" -> System.out.println("Returning to ledger screen...\n");
+                default -> System.out.println("Invalid selection, please try again from the list above.\n");
             }
 
         } while (!userChoice.equals("0"));
@@ -170,6 +168,9 @@ public class App {
         try {
 
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
+
+            LocalDate dateNow = LocalDate.now();
+            LocalTime timeNow = LocalTime.now();
 
             System.out.println("Enter the description: ");
             String description = promptForString();
@@ -187,12 +188,13 @@ public class App {
             bufferedWriter.write(dateNow + "|" + timeNow + "|" + description + "|" + vendor + "|" + amount + "\n");
 
             System.out.printf("Deposit recorded: %s | %s | $ %.2f%n", transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
+            System.out.println();
 
             bufferedWriter.close();
 
         } catch (IOException e) {
             //throw new RuntimeException(e);
-            System.out.println("Unable to write to the file, please check connection and try again.");
+            System.out.println("Unable to write to the file, please check connection and try again.\n");
 
         }
 
@@ -205,6 +207,9 @@ public class App {
         try {
 
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
+
+            LocalDate dateNow = LocalDate.now();
+            LocalTime timeNow = LocalTime.now();
 
             System.out.println("Enter the description: ");
             String description = promptForString();
@@ -386,6 +391,8 @@ public class App {
     private static ArrayList<Transaction> filterMonthToDate() {
 
         ArrayList<Transaction> monthToDateTransactions = new ArrayList<>();
+        LocalDate dateNow = LocalDate.now();
+        LocalTime timeNow = LocalTime.now();
 
         System.out.println(" - Month to Date - ");
 
@@ -427,6 +434,9 @@ public class App {
     private static ArrayList<Transaction> filterYearToDate() {
 
         ArrayList<Transaction> yearToDateTransactions = new ArrayList<>();
+
+        LocalDate dateNow = LocalDate.now();
+        LocalTime timeNow = LocalTime.now();
 
         System.out.println(" - Year to Date - ");
 
@@ -499,14 +509,14 @@ public class App {
 
         if (!transactions.isEmpty()) {
 
-            System.out.printf("%40s", "TRANSACTIONS");
+            System.out.printf("%43s", "TRANSACTIONS");
             System.out.println();
             System.out.println();
-            System.out.printf("|%s|%s|%s|%s|%n", center("DATE", 12), center("DESCRIPTION", 26), center("VENDOR", 20), center("AMOUNT", 14));
+            System.out.printf("|%s|%s|%s|%s|%s|%n", center("DATE", 12), center("TIME", 12), center("DESCRIPTION", 26), center("VENDOR", 20), center("AMOUNT", 14));
 
             for (Transaction transaction : transactions) {
 
-                System.out.printf("|%s|%s|%s| $%s|%n", center(transaction.getDate().toString(), 12), center(transaction.getDescription(), 26), center(transaction.getVendor(), 20), center(String.format("%.2f", transaction.getAmount()), 12));
+                System.out.printf("|%s|%s|%s|%s| $%s|%n", center(transaction.getDate().toString(), 12), center(transaction.getTime().toString(), 12), center(transaction.getDescription(), 26), center(transaction.getVendor(), 20), center(String.format("%.2f", transaction.getAmount()), 12));
 
             }
 
