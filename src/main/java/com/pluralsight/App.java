@@ -80,7 +80,8 @@ public class App {
         do {
 
             System.out.println("""
-                    HOME SCREEN
+                     - HOME SCREEN -
+                     
                     D) Add Deposit
                     P) Make Payment
                     L) Ledger
@@ -108,7 +109,8 @@ public class App {
         do {
 
             System.out.println("""
-                    LEDGER SCREEN
+                     - LEDGER SCREEN -
+                     
                     A) View All Transactions
                     D) View Deposits
                     P) View Payments
@@ -137,7 +139,8 @@ public class App {
         do {
 
             System.out.println("""
-                    REPORTS SCREEN
+                     - REPORTS SCREEN -
+                     
                     1) Month to Date
                     2) Previous Month
                     3) Year to Date
@@ -185,7 +188,7 @@ public class App {
 
             transactions.add(transaction);
 
-            bufferedWriter.write(dateNow + "|" + timeNow + "|" + description + "|" + vendor + "|" + amount + "\n");
+            bufferedWriter.write(dateNow + "|" + timeNow.format(formatter) + "|" + description + "|" + vendor + "|" + amount + "\n");
 
             System.out.printf("Deposit recorded: %s | %s | $ %.2f%n", transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
             System.out.println();
@@ -226,7 +229,7 @@ public class App {
 
             transactions.add(transaction);
 
-            bufferedWriter.write(dateNow + "|" + timeNow + "|" + description + "|" + vendor + "|" + amount + "\n");
+            bufferedWriter.write(dateNow + "|" + timeNow.format(formatter) + "|" + description + "|" + vendor + "|" + amount + "\n");
 
             System.out.printf("Payment recorded: %s | %s | $ %.2f%n", transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
 
@@ -244,6 +247,7 @@ public class App {
 
     private static void viewAllTransactions() {
 
+        System.out.println("                                     - Transactions -");
         displayTransactionsAsTable(transactions);
 
         pressEnterToContinue();
@@ -509,7 +513,6 @@ public class App {
 
         if (!transactions.isEmpty()) {
 
-            System.out.printf("%43s", "TRANSACTIONS");
             System.out.println();
             System.out.println();
             System.out.printf("|%s|%s|%s|%s|%s|%n", center("DATE", 12), center("TIME", 12), center("DESCRIPTION", 26), center("VENDOR", 20), center("AMOUNT", 14));
