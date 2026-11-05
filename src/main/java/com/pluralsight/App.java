@@ -369,9 +369,19 @@ public class App {
         ArrayList<Transaction> deposits = new ArrayList<>();
 
         for (Transaction transaction : transactions) {
+
             if (transaction.getAmount() > 0) {
+
                 deposits.add(transaction);
+
             }
+
+        }
+
+        if (deposits.isEmpty()) {
+
+            System.out.println("No transactions found");
+
         }
 
         return deposits;
@@ -383,9 +393,19 @@ public class App {
         ArrayList<Transaction> payments = new ArrayList<>();
 
         for (Transaction transaction : transactions) {
+
             if (transaction.getAmount() < 0) {
+
                 payments.add(transaction);
+
             }
+
+        }
+
+        if (payments.isEmpty()) {
+
+            System.out.println("No transactions found");
+
         }
 
         return payments;
@@ -411,6 +431,12 @@ public class App {
 
         }
 
+        if (monthToDateTransactions.isEmpty()) {
+
+            System.out.println("No transactions found");
+
+        }
+
         return monthToDateTransactions;
 
     }
@@ -430,6 +456,13 @@ public class App {
                 previousMonthTransactions.add(transaction);
 
             }
+
+        }
+
+        if (previousMonthTransactions.isEmpty()) {
+
+            System.out.println("No transactions found");
+
         }
 
         return previousMonthTransactions;
@@ -455,6 +488,12 @@ public class App {
 
         }
 
+        if (yearToDateTransactions.isEmpty()) {
+
+            System.out.println("No transactions found");
+
+        }
+
         return yearToDateTransactions;
 
     }
@@ -474,6 +513,12 @@ public class App {
                 previousYearTransactions.add(transaction);
 
             }
+
+        }
+
+        if (previousYearTransactions.isEmpty()) {
+
+            System.out.println("No transactions found");
 
         }
 
