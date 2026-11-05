@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class App {
@@ -16,11 +15,17 @@ public class App {
 
     public static void main(String[] args) {
 
-        displayBanner();
-        loadTransactions();
-        runHomeScreen();
+        try {
 
-        scanner.close();
+            displayBanner();
+            loadTransactions();
+            runHomeScreen();
+
+        } finally {
+
+            scanner.close();
+
+        }
 
     }
 
@@ -62,6 +67,7 @@ public class App {
             System.out.println("Error reading file");
             //throw new RuntimeException(e);
         }
+
     }
 
     private static void displayBanner() {
@@ -325,22 +331,28 @@ public class App {
     }
 
     private static String promptForString() {
-        String userString = scanner.nextLine();
+        String userString = null;
 
-        if (userString.isEmpty()) {
+        while (true) {
 
-            System.out.println("Input not recorded, please try again: ");
-            userString = scanner.nextLine().trim().toLowerCase();
+            userString = scanner.nextLine().trim();
+
+            if (userString.isEmpty()) {
+
+                System.out.println("Input not recorded, please try again: ");
+                continue;
+
+            }
+            if (userString.contains("|")) {
+
+                System.out.println("Please do not use '|', try again.");
+                continue;
+
+            }
+
+            return userString;
 
         }
-        if (userString.contains("|")) {
-
-            System.out.println("Please do not use '|', try again.");
-            userString = scanner.nextLine().trim().toLowerCase();
-
-        }
-
-        return userString;
 
     }
 
@@ -348,7 +360,9 @@ public class App {
         String amount = null;
 
         while (true) {
+
             try {
+
                 amount = scanner.nextLine();
 
                 if (amount.isEmpty()) {
