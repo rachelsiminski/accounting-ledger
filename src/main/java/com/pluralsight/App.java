@@ -349,7 +349,7 @@ public class App {
     }
 
     private static String promptForString() {
-        String userString = null;
+        String userString;
 
         while (true) {
 
@@ -375,13 +375,13 @@ public class App {
     }
 
     private static double promptForDouble() {
-        String amount = null;
+        String amount;
 
         while (true) {
 
             try {
 
-                amount = scanner.nextLine();
+                amount = scanner.nextLine().trim();
 
                 if (amount.isEmpty()) {
 
@@ -424,12 +424,6 @@ public class App {
 
         }
 
-        if (deposits.isEmpty()) {
-
-            System.out.println("No transactions found");
-
-        }
-
         return deposits;
 
     }
@@ -445,12 +439,6 @@ public class App {
                 payments.add(transaction);
 
             }
-
-        }
-
-        if (payments.isEmpty()) {
-
-            System.out.println("No transactions found");
 
         }
 
@@ -474,12 +462,6 @@ public class App {
 
         }
 
-        if (monthToDateTransactions.isEmpty()) {
-
-            System.out.println("No transactions found");
-
-        }
-
         return monthToDateTransactions;
 
     }
@@ -497,12 +479,6 @@ public class App {
                 previousMonthTransactions.add(transaction);
 
             }
-
-        }
-
-        if (previousMonthTransactions.isEmpty()) {
-
-            System.out.println("No transactions found");
 
         }
 
@@ -526,12 +502,6 @@ public class App {
 
         }
 
-        if (yearToDateTransactions.isEmpty()) {
-
-            System.out.println("No transactions found");
-
-        }
-
         return yearToDateTransactions;
 
     }
@@ -549,12 +519,6 @@ public class App {
                 previousYearTransactions.add(transaction);
 
             }
-
-        }
-
-        if (previousYearTransactions.isEmpty()) {
-
-            System.out.println("No transactions found");
 
         }
 
@@ -578,12 +542,6 @@ public class App {
 
         }
 
-        if (vendors.isEmpty()) {
-
-            System.out.println("There are no transactions that match this vendor. Please try again.");
-
-        }
-
         return vendors;
 
     }
@@ -603,6 +561,11 @@ public class App {
                 System.out.printf("|%s|%s|%s|%s| $%s|%n", center(transaction.getDate().toString(), 12), center(transaction.getTime().toString(), 12), center(transaction.getDescription(), 26), center(transaction.getVendor(), 20), center(String.format("%.2f", transaction.getAmount()), 12));
 
             }
+
+        }
+        else {
+
+           System.out.println("No transactions found");
 
         }
 
