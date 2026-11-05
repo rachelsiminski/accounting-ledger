@@ -65,7 +65,10 @@ public class App {
     private static void displayBanner() {
 
         System.out.println("""
-                HELLO""");
+                PERSONAL LEDGER
+                
+                Welcome to the personal budgeting ledger! Enter the name of the transactions file to be accessed by the program.
+                Each menu will list the options available""");
 
     }
 
