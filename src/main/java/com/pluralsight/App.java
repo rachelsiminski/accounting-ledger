@@ -4,6 +4,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -47,9 +48,25 @@ public class App {
 
                     String[] fields = line.split("\\|");
 
-                    Transaction transaction = new Transaction(LocalDate.parse(fields[0]), LocalTime.parse(fields[1]), fields[2], fields[3], Double.parseDouble(fields[4]));
+                    Transaction transaction;
 
-                    transactions.add(transaction);
+                    if (fields.length != 5) {
+
+                        System.out.println("Skipping malformed line: " + line);
+
+                    }
+
+                    try {
+
+                        transaction = new Transaction(LocalDate.parse(fields[0]), LocalTime.parse(fields[1]), fields[2], fields[3], Double.parseDouble(fields[4]));
+                        transactions.add(transaction);
+
+                    } catch (DateTimeParseException | NumberFormatException e) {
+
+                        System.out.println("Skipping invalid transaction line: " + line);
+                        //throw new RuntimeException(e);
+
+                    }
 
                 }
 
