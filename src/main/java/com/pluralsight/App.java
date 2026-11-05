@@ -331,14 +331,14 @@ public class App {
                 if (amount.isEmpty()) {
 
                     System.out.println("Input not recorded, please try again: ");
-                    amount = scanner.nextLine();
+                    continue;
 
                 }
 
                 if (amount.equals("0") || amount.contains("-")) {
 
                     System.out.println("Please enter a positive number.");
-                    amount = scanner.nextLine();
+                    continue;
 
                 }
 
