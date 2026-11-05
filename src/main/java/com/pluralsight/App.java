@@ -48,8 +48,6 @@ public class App {
 
                     String[] fields = line.split("\\|");
 
-                    Transaction transaction;
-
                     if (fields.length != 5) {
 
                         System.out.println("Skipping malformed line: " + line);
@@ -58,7 +56,7 @@ public class App {
 
                     try {
 
-                        transaction = new Transaction(LocalDate.parse(fields[0]), LocalTime.parse(fields[1]), fields[2], fields[3], Double.parseDouble(fields[4]));
+                        Transaction transaction = new Transaction(LocalDate.parse(fields[0]), LocalTime.parse(fields[1]), fields[2], fields[3], Double.parseDouble(fields[4]));
                         transactions.add(transaction);
 
                     } catch (DateTimeParseException | NumberFormatException e) {
@@ -90,10 +88,13 @@ public class App {
     private static void displayBanner() {
 
         System.out.println("""
-                PERSONAL LEDGER
+                 - PERSONAL LEDGER -
                 
-                Welcome to the personal budgeting ledger! Enter the name of the transactions file to be accessed by the program.
-                Each menu will list the options available""");
+                Welcome to the personal budgeting ledger!
+                Enter the name of the transactions file to be accessed by the program.
+                Each menu will list the options available.""");
+
+        System.out.println();
 
     }
 
@@ -173,7 +174,7 @@ public class App {
                     
                     Please enter your selection: """);
 
-            userChoice = scanner.nextLine().trim().toLowerCase();
+            userChoice = scanner.nextLine().trim();
 
             switch (userChoice) {
                 case "1" -> viewMonthToDate();
@@ -193,8 +194,6 @@ public class App {
 
         try {
 
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
-
             LocalDate dateNow = LocalDate.now();
             LocalTime timeNow = LocalTime.now();
 
@@ -211,12 +210,14 @@ public class App {
 
             transactions.add(transaction);
 
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
+
             bufferedWriter.write(dateNow + "|" + timeNow.format(formatter) + "|" + description + "|" + vendor + "|" + amount + "\n");
+
+            bufferedWriter.close();
 
             System.out.printf("Deposit recorded: %s | %s | $ %.2f%n", transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
             System.out.println();
-
-            bufferedWriter.close();
 
         } catch (IOException e) {
             //throw new RuntimeException(e);
@@ -231,8 +232,6 @@ public class App {
     private static void makePayment() {
 
         try {
-
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
 
             LocalDate dateNow = LocalDate.now();
             LocalTime timeNow = LocalTime.now();
@@ -252,11 +251,13 @@ public class App {
 
             transactions.add(transaction);
 
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
+
             bufferedWriter.write(dateNow + "|" + timeNow.format(formatter) + "|" + description + "|" + vendor + "|" + amount + "\n");
 
-            System.out.printf("Payment recorded: %s | %s | $ %.2f%n", transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
-
             bufferedWriter.close();
+
+            System.out.printf("Payment recorded: %s | %s | $ %.2f%n", transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
 
         } catch (IOException e) {
             //throw new RuntimeException(e);
