@@ -33,10 +33,14 @@ public class App {
     private static void loadTransactions() {
         try {
 
-//            System.out.println("Enter the name of the file to be accessed: ");
-//            String fileName = scanner.nextLine();
+            System.out.println("Enter the name of the file to be accessed: ");
+            String fileName = promptForString();
 
-            BufferedReader bufferedReader = new BufferedReader(new FileReader("transactions.csv"));
+            System.out.println("Accessing file...");
+            System.out.println();
+            System.out.println();
+
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
 
             bufferedReader.readLine();
 
@@ -71,6 +75,9 @@ public class App {
             }
 
             bufferedReader.close();
+
+            System.out.println("File read successful!");
+            System.out.println();
 
         } catch (FileNotFoundException e) {
 
