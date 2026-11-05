@@ -109,6 +109,7 @@ public class App {
                     D) Add Deposit
                     P) Make Payment
                     L) Ledger
+                    B) Balance
                     X) Exit
                     
                     Please enter your selection: """);
@@ -119,6 +120,7 @@ public class App {
                 case "d" -> addDeposit();
                 case "p" -> makePayment();
                 case "l" -> runLedgerScreen();
+                case "b" -> viewBalance();
                 case "x" -> System.out.println("Goodbye!");
                 default -> System.out.println("Invalid selection, please try again from the list above.\n");
             }
@@ -269,6 +271,15 @@ public class App {
 
     }
 
+    private static void viewBalance() {
+
+        System.out.println("Current Balance:");
+        System.out.printf("$ %.2f%n", calculateBalance(transactions));
+
+        pressEnterToContinue();
+
+    }
+
     private static void viewAllTransactions() {
 
         System.out.println("                                     - Transactions -");
@@ -407,6 +418,20 @@ public class App {
             }
 
         }
+
+    }
+
+    private static double calculateBalance(ArrayList<Transaction> transactions) {
+
+        double sum = 0;
+
+        for (Transaction transaction : transactions) {
+
+            sum += transaction.getAmount();
+
+        }
+
+        return sum;
 
     }
 
