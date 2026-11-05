@@ -5,9 +5,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class App {
+
     private static final Scanner scanner = new Scanner(System.in);
     private static final ArrayList<Transaction> transactions = new ArrayList<>();
     private static final LocalDate dateNow = LocalDate.now();
@@ -53,10 +55,12 @@ public class App {
             bufferedReader.close();
 
         } catch (FileNotFoundException e) {
+
             //throw new RuntimeException(e);
             System.out.println("Unable to read the file, please check the location and try again.");
 
         } catch (IOException e) {
+
             System.out.println("Error reading file");
             //throw new RuntimeException(e);
         }
@@ -95,6 +99,7 @@ public class App {
                 case "x" -> System.out.println("Goodbye!");
                 default -> System.out.println("Invalid selection, please try again from the list above.");
             }
+
         } while (!userChoice.equals("x"));
 
     }
@@ -155,6 +160,7 @@ public class App {
                 case "0" -> System.out.println("Returning to ledger screen...");
                 default -> System.out.println("Invalid selection, please try again from the list above.");
             }
+
         } while (!userChoice.equals("0"));
 
     }
@@ -299,8 +305,16 @@ public class App {
         String userString = scanner.nextLine();
 
         if (userString.isEmpty()) {
+
             System.out.println("Input not recorded, please try again: ");
             userString = scanner.nextLine().trim().toLowerCase();
+
+        }
+        if (userString.contains("|")) {
+
+            System.out.println("Please do not use '|', try again.");
+            userString = scanner.nextLine().trim().toLowerCase();
+
         }
 
         return userString;
