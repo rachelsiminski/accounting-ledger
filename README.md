@@ -17,6 +17,7 @@ This is a command-line application that reads in and writes to a transactions CS
 - View Year to Date report (Reports)
 - View Previous Year report (Reports)
 - Search for transactions by vendor (Reports)
+- Custom search (Reports)
 
 ## How to run it
 
@@ -40,7 +41,8 @@ This is a command-line application that reads in and writes to a transactions CS
     17. Year to Date: filter transactions to see just the current year
     18. Previous Year: filter transactions to see just the previous year
     19. Search by Vendor: filter transactions by vendor - enter the specific vendor when prompted
-    20. Back: back to ledger screen
+    20. Custom Search: Enter the data for the desired fields, or enter skip to skip a field
+    21. Back: back to ledger screen
 
 
 ## Interesting code
@@ -113,3 +115,6 @@ private static void displayTransactionsAsTable(ArrayList<Transaction> transactio
 
 ## Screenshots
 ![Screens map](images/screensmap.png)
+![Screens output](images/screens.png)
+![Custom search](images/custom-search.png)
+![Ledger screen and transcations](images/screen-and-transactions.png)
