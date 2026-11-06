@@ -200,7 +200,6 @@ public class App {
         addTransaction(false);
     }
 
-
     private static void viewBalance() {
         System.out.println("Current Balance:");
         System.out.printf("$ %.2f%n", calculateBalance(transactions));
