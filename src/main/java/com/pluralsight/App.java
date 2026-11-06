@@ -159,7 +159,7 @@ public class App {
         } while (!userChoice.equals("0"));
     }
 
-    private static void addDeposit() {
+    private static void addTransaction(boolean isDeposit) {
         try {
             LocalDate dateNow = LocalDate.now();
             LocalTime timeNow = LocalTime.now();
@@ -173,14 +173,18 @@ public class App {
             System.out.println("Enter the amount: ");
             double amount = promptForDouble();
 
-            Transaction transaction = new Transaction(dateNow, LocalTime.parse(timeNow.format(formatter)), description, vendor, amount);
-            transactions.add(transaction);
+            if (!isDeposit) {
+                amount *= -1;
+            }
 
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
             bufferedWriter.write(dateNow + "|" + timeNow.format(formatter) + "|" + description + "|" + vendor + "|" + amount + "\n");
             bufferedWriter.close();
 
-            System.out.printf("Deposit recorded: %s | %s | $ %.2f%n", transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
+            Transaction transaction = new Transaction(dateNow, LocalTime.parse(timeNow.format(formatter)), description, vendor, amount);
+            transactions.add(transaction);
+
+            System.out.printf("Transaction recorded: %s | %s | $ %.2f%n", transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
             System.out.println();
         } catch (IOException e) {
             System.out.println("Unable to write to the file, please check connection and try again.\n");
@@ -188,40 +192,14 @@ public class App {
         pressEnterToContinue();
     }
 
-    private static void makePayment() {
-        try {
-            LocalDate dateNow = LocalDate.now();
-            LocalTime timeNow = LocalTime.now();
-
-            System.out.println("Enter the description: ");
-            String description = promptForString();
-
-            System.out.println("Enter the vendor: ");
-            String vendor = promptForString();
-
-            System.out.println("Enter the amount: ");
-            double amount = promptForDouble();
-
-            amount *= -1;
-
-            Transaction transaction = new Transaction(dateNow, LocalTime.parse(timeNow.format(formatter)), description, vendor, amount);
-            transactions.add(transaction);
-
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
-            bufferedWriter.write(dateNow + "|" + timeNow.format(formatter) + "|" + description + "|" + vendor + "|" + amount + "\n");
-            bufferedWriter.close();
-
-            System.out.printf("Payment recorded: %s | %s | $ %.2f%n", transaction.getDescription(), transaction.getVendor(), transaction.getAmount());
-
-        } catch (IOException e) {
-            //throw new RuntimeException(e);
-            System.out.println("Unable to write to the file, please check connection and try again.");
-
-        }
-
-        pressEnterToContinue();
-
+    private static void addDeposit() {
+        addTransaction(true);
     }
+
+    private static void makePayment() {
+        addTransaction(false);
+    }
+
 
     private static void viewBalance() {
         System.out.println("Current Balance:");
