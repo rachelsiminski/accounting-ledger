@@ -179,6 +179,7 @@ public class App {
                     3) Year to Date
                     4) Previous Year
                     5) Search by Vendor
+                    6) Custom Search
                     0) Return to Ledger
                     
                     Please enter your selection: """);
@@ -191,6 +192,7 @@ public class App {
                 case "3" -> viewYearToDate();
                 case "4" -> viewPreviousYear();
                 case "5" -> searchByVendor();
+                case "6" -> customSearch();
                 case "0" -> System.out.println("Returning to ledger screen...\n");
                 default -> System.out.println("Invalid selection, please try again from the list above.\n");
             }
@@ -361,6 +363,16 @@ public class App {
         System.out.println("                                     - Search by Vendor -");
 
         displayTransactionsAsTable(filterByVendor());
+
+        pressEnterToContinue();
+
+    }
+
+    private static void customSearch() {
+
+        System.out.println("                                     - Custom Search -");
+
+        displayTransactionsAsTable(filterCustomSearch());
 
         pressEnterToContinue();
 
@@ -575,6 +587,97 @@ public class App {
         }
 
         return vendors;
+
+    }
+
+    private static ArrayList<Transaction> filterCustomSearch() {
+
+        ArrayList<Transaction> custom = new ArrayList<>();
+
+
+        System.out.println("""
+                Custom Search Parameters
+                Fill in the fields to search
+                Enter "skip" to skip a field""");
+        System.out.println();
+        System.out.println("Date Range");
+        System.out.println("Enter the start date: (yyyy-mm-dd)");
+        String start = promptForString();
+        System.out.println("Enter the end date: (yyyy-mm-dd)");
+        String end = promptForString();
+
+        System.out.println("Enter the description: ");
+        String description = promptForString();
+
+        System.out.println("Enter the vendor: ");
+        String vendor = promptForString();
+
+        System.out.println("Enter the amount: ");
+        String amount = promptForString();
+
+        for (Transaction transaction : transactions) {
+
+            if (!start.equalsIgnoreCase("skip") && !end.equalsIgnoreCase("skip")) {
+                LocalDate startDate = LocalDate.parse(start);
+                LocalDate endDate = LocalDate.parse(end);
+
+                if (transaction.getDate().isAfter(startDate) && transaction.getDate().isBefore(endDate)) {
+
+                    custom.add(transaction);
+
+                }
+
+            } else if (!start.equalsIgnoreCase("skip")) {
+                LocalDate startDate = LocalDate.parse(start);
+
+                if (transaction.getDate().isAfter(startDate)) {
+
+                    custom.add(transaction);
+
+                }
+
+            } else if (!end.equalsIgnoreCase("skip")) {
+                LocalDate endDate = LocalDate.parse(end);
+
+                if (transaction.getDate().isBefore(endDate)) {
+
+                    custom.add(transaction);
+
+                }
+
+            }
+            if (!description.equalsIgnoreCase("skip")) {
+
+                if (transaction.getDescription().equals(description)) {
+
+                    custom.add(transaction);
+
+                }
+
+            }
+            if (!vendor.equalsIgnoreCase("skip")) {
+
+                if (transaction.getVendor().equals(vendor)) {
+
+                    custom.add(transaction);
+
+                }
+
+            }
+            if (!amount.equalsIgnoreCase("skip")) {
+                double amountValue = Double.parseDouble(amount);
+
+                if (transaction.getAmount() == amountValue) {
+
+                    custom.add(transaction);
+
+                }
+
+            }
+
+        }
+
+        return custom;
 
     }
 
