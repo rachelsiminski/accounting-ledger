@@ -429,45 +429,50 @@ public class App {
         String end = promptForString();
 
         System.out.println("Enter the description: ");
-        String description = promptForString();
+        String description = promptForString().toLowerCase();
 
         System.out.println("Enter the vendor: ");
-        String vendor = promptForString();
+        String vendor = promptForString().toLowerCase();
 
         System.out.println("Enter the amount: ");
         String amount = promptForString();
 
         for (Transaction transaction : transactions) {
             if (!start.equalsIgnoreCase("skip") && !end.equalsIgnoreCase("skip")) {
-                LocalDate startDate = LocalDate.parse(start);
-                LocalDate endDate = LocalDate.parse(end);
-                if (transaction.getDate().isAfter(startDate) && transaction.getDate().isBefore(endDate)) {
-                    custom.add(transaction);
+                try {
+                    LocalDate startDate = LocalDate.parse(start);
+                    LocalDate endDate = LocalDate.parse(end);
+                    if (!transaction.getDate().isBefore(startDate) && !transaction.getDate().isAfter(endDate)) {
+                        custom.add(transaction);
+                    }
+                } catch (DateTimeParseException e) {
+                    System.out.println("Unable to parse date, please try again");
+
                 }
             } else if (!start.equalsIgnoreCase("skip")) {
                 LocalDate startDate = LocalDate.parse(start);
-                if (transaction.getDate().isAfter(startDate)) {
+                if (!transaction.getDate().isBefore(startDate) && !custom.contains(transaction)) {
                     custom.add(transaction);
                 }
             } else if (!end.equalsIgnoreCase("skip")) {
                 LocalDate endDate = LocalDate.parse(end);
-                if (transaction.getDate().isBefore(endDate)) {
+                if (!transaction.getDate().isAfter(endDate) && !custom.contains(transaction)) {
                     custom.add(transaction);
                 }
             }
             if (!description.equalsIgnoreCase("skip")) {
-                if (transaction.getDescription().equals(description)) {
+                if (transaction.getDescription().toLowerCase().contains(description) && !custom.contains(transaction)) {
                     custom.add(transaction);
                 }
             }
             if (!vendor.equalsIgnoreCase("skip")) {
-                if (transaction.getVendor().equals(vendor)) {
+                if (transaction.getVendor().equalsIgnoreCase(vendor.toLowerCase()) && !custom.contains(transaction)) {
                     custom.add(transaction);
                 }
             }
             if (!amount.equalsIgnoreCase("skip")) {
                 double amountValue = Double.parseDouble(amount);
-                if (transaction.getAmount() == amountValue) {
+                if (transaction.getAmount() == amountValue && !custom.contains(transaction)) {
                     custom.add(transaction);
                 }
             }
