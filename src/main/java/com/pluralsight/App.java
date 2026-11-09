@@ -303,11 +303,8 @@ public class App {
                     System.out.println("Please enter a positive number.");
                     continue;
                 }
-                if (amount.equalsIgnoreCase("skip")) {
-                    amount = null;
-                }
-
                 return Double.parseDouble(amount);
+
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a number");
             }
@@ -325,6 +322,20 @@ public class App {
                 return LocalDate.parse(date);
             } catch (DateTimeParseException e) {
                 System.out.println("Unable to parse date, please use the format yyyy-MM-dd");
+            }
+        }
+    }
+
+    private static Double promptOptionalDouble() {
+        while (true) {
+            String amount = promptForString();
+            if (amount.equalsIgnoreCase("skip")) {
+                return null;
+            }
+            try {
+                return Double.parseDouble(amount);
+            } catch (NumberFormatException e) {
+                System.out.println("Unable to read amount, please enter a number or \"skip\".");
             }
         }
     }
@@ -453,7 +464,7 @@ public class App {
         String vendor = promptForString().toLowerCase();
 
         System.out.println("Enter the amount: ");
-        Double amount = promptForDouble();
+        Double amount = promptOptionalDouble();
 
         for (Transaction transaction : transactions) {
             boolean matches = true;
@@ -470,7 +481,7 @@ public class App {
             if (!vendor.equalsIgnoreCase("skip") && !transaction.getVendor().equalsIgnoreCase(vendor)) {
                 matches = false;
             }
-            if (amount != null && transaction.getAmount() != amount) {
+            if (amount != null && Math.abs(transaction.getAmount() - amount) > 0.001) {
                 matches = false;
             }
             if (matches) {
