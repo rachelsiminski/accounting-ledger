@@ -444,8 +444,6 @@ public class App {
     }
 
     private static ArrayList<Transaction> filterCustomSearch() {
-        ArrayList<Transaction> custom = new ArrayList<>();
-
         System.out.println("""
                 Custom Search Parameters
                 Fill in the fields to search
@@ -465,6 +463,12 @@ public class App {
 
         System.out.println("Enter the amount: ");
         Double amount = promptOptionalDouble();
+
+        return findTransactions(start, end, description, vendor, amount);
+    }
+
+    private static ArrayList<Transaction> findTransactions(LocalDate start, LocalDate end, String description, String vendor, Double amount) {
+        ArrayList<Transaction> custom = new ArrayList<>();
 
         for (Transaction transaction : transactions) {
             boolean matches = true;
@@ -488,7 +492,6 @@ public class App {
                 custom.add(transaction);
             }
         }
-
         return custom;
     }
 
