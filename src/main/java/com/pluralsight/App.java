@@ -28,15 +28,14 @@ public class App {
     }
 
     private static void loadTransactions() {
-        try {
-            System.out.println("Enter the name of the file to be accessed: ");
-            String fileName = promptForString();
+        System.out.println("Enter the name of the file to be accessed: ");
+        String fileName = promptForString();
 
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
             System.out.println("Accessing file...");
             System.out.println();
             System.out.println();
 
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
             bufferedReader.readLine();
 
             String line;
@@ -47,6 +46,7 @@ public class App {
 
                     if (fields.length != 5) {
                         System.out.println("Skipping malformed line: " + line);
+                        continue;
                     }
                     try {
                         Transaction transaction = new Transaction(LocalDate.parse(fields[0]), LocalTime.parse(fields[1]), fields[2], fields[3], Double.parseDouble(fields[4]));
@@ -56,8 +56,6 @@ public class App {
                     }
                 }
             }
-            bufferedReader.close();
-
             System.out.println("File read successful!");
             System.out.println();
         } catch (FileNotFoundException e) {
@@ -377,7 +375,6 @@ public class App {
     private static ArrayList<Transaction> filterMonthToDate() {
         ArrayList<Transaction> monthToDateTransactions = new ArrayList<>();
         LocalDate dateNow = LocalDate.now();
-        LocalTime timeNow = LocalTime.now();
 
         for (Transaction transaction : transactions) {
             if (dateNow.getMonth() == transaction.getDate().getMonth() && dateNow.getYear() == transaction.getDate().getYear()) {
@@ -404,7 +401,6 @@ public class App {
     private static ArrayList<Transaction> filterYearToDate() {
         ArrayList<Transaction> yearToDateTransactions = new ArrayList<>();
         LocalDate dateNow = LocalDate.now();
-        LocalTime timeNow = LocalTime.now();
 
         for (Transaction transaction : transactions) {
             if (dateNow.getYear() == transaction.getDate().getYear()) {
