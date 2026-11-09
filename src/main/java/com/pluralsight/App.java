@@ -265,7 +265,7 @@ public class App {
 
     private static void customSearch() {
         System.out.println("                                     - Custom Search -");
-        displayTransactionsAsTable(filterCustomSearch());
+        displayTransactionsAsTable(filterCustomSearch());  // custom arraylist
 
         pressEnterToContinue();
     }
@@ -303,10 +303,28 @@ public class App {
                     System.out.println("Please enter a positive number.");
                     continue;
                 }
+                if (amount.equalsIgnoreCase("skip")) {
+                    amount = null;
+                }
 
                 return Double.parseDouble(amount);
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a number");
+            }
+        }
+    }
+
+    private static LocalDate promptForDate() {
+        while (true) {
+            String date = promptForString();
+            if (date.equalsIgnoreCase("skip")) {
+                return null;
+            }
+
+            try {
+                return LocalDate.parse(date);
+            } catch (DateTimeParseException e) {
+                System.out.println("Unable to parse date, please use the format yyyy-MM-dd");
             }
         }
     }
@@ -424,9 +442,9 @@ public class App {
         System.out.println();
         System.out.println("Date Range");
         System.out.println("Enter the start date: (yyyy-mm-dd)");
-        String start = promptForString();
+        LocalDate start = promptForDate();
         System.out.println("Enter the end date: (yyyy-mm-dd)");
-        String end = promptForString();
+        LocalDate end = promptForDate();
 
         System.out.println("Enter the description: ");
         String description = promptForString().toLowerCase();
@@ -435,46 +453,28 @@ public class App {
         String vendor = promptForString().toLowerCase();
 
         System.out.println("Enter the amount: ");
-        String amount = promptForString();
+        Double amount = promptForDouble();
 
         for (Transaction transaction : transactions) {
-            if (!start.equalsIgnoreCase("skip") && !end.equalsIgnoreCase("skip")) {
-                try {
-                    LocalDate startDate = LocalDate.parse(start);
-                    LocalDate endDate = LocalDate.parse(end);
-                    if (!transaction.getDate().isBefore(startDate) && !transaction.getDate().isAfter(endDate)) {
-                        custom.add(transaction);
-                    }
-                } catch (DateTimeParseException e) {
-                    System.out.println("Unable to parse date, please try again");
+            boolean matches = true;
 
-                }
-            } else if (!start.equalsIgnoreCase("skip")) {
-                LocalDate startDate = LocalDate.parse(start);
-                if (!transaction.getDate().isBefore(startDate) && !custom.contains(transaction)) {
-                    custom.add(transaction);
-                }
-            } else if (!end.equalsIgnoreCase("skip")) {
-                LocalDate endDate = LocalDate.parse(end);
-                if (!transaction.getDate().isAfter(endDate) && !custom.contains(transaction)) {
-                    custom.add(transaction);
-                }
+            if (start != null && transaction.getDate().isBefore(start)) {
+                matches = false;
             }
-            if (!description.equalsIgnoreCase("skip")) {
-                if (transaction.getDescription().toLowerCase().contains(description) && !custom.contains(transaction)) {
-                    custom.add(transaction);
-                }
+            if (end != null && transaction.getDate().isAfter(end)) {
+                matches = false;
             }
-            if (!vendor.equalsIgnoreCase("skip")) {
-                if (transaction.getVendor().equalsIgnoreCase(vendor.toLowerCase()) && !custom.contains(transaction)) {
-                    custom.add(transaction);
-                }
+            if (!description.equalsIgnoreCase("skip") && !transaction.getDescription().toLowerCase().contains(description.toLowerCase())) {
+                matches = false;
             }
-            if (!amount.equalsIgnoreCase("skip")) {
-                double amountValue = Double.parseDouble(amount);
-                if (transaction.getAmount() == amountValue && !custom.contains(transaction)) {
-                    custom.add(transaction);
-                }
+            if (!vendor.equalsIgnoreCase("skip") && !transaction.getVendor().equalsIgnoreCase(vendor)) {
+                matches = false;
+            }
+            if (amount != null && transaction.getAmount() != amount) {
+                matches = false;
+            }
+            if (matches) {
+                custom.add(transaction);
             }
         }
 
