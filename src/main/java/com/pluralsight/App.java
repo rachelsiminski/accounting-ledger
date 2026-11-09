@@ -82,7 +82,7 @@ public class App {
         do {
             System.out.println("""
                      - HOME SCREEN -
-                     
+                    
                     D) Add Deposit
                     P) Make Payment
                     L) Ledger
@@ -108,7 +108,7 @@ public class App {
         do {
             System.out.println("""
                      - LEDGER SCREEN -
-                     
+                    
                     A) View All Transactions
                     D) View Deposits
                     P) View Payments
@@ -134,7 +134,7 @@ public class App {
         do {
             System.out.println("""
                      - REPORTS SCREEN -
-                     
+                    
                     1) Month to Date
                     2) Previous Month
                     3) Year to Date
@@ -289,22 +289,22 @@ public class App {
     }
 
     private static double promptForDouble() {
-        String amount;
+        String input;
 
         while (true) {
+            input = scanner.nextLine().trim();
+
+            if (input.isEmpty()) {
+                System.out.println("Input not recorded, please try again: ");
+                continue;
+            }
             try {
-                amount = scanner.nextLine().trim();
-
-                if (amount.isEmpty()) {
-                    System.out.println("Input not recorded, please try again: ");
-                    continue;
-                }
-                if (amount.equals("0") || amount.contains("-")) {
+                double amount = Double.parseDouble(input);
+                if (amount > 0) {
+                    return amount;
+                } else {
                     System.out.println("Please enter a positive number.");
-                    continue;
                 }
-                return Double.parseDouble(amount);
-
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a number");
             }
@@ -506,7 +506,7 @@ public class App {
                 System.out.printf("|%s|%s|%s|%s| $%s|%n", center(transaction.getDate().toString(), 12), center(transaction.getTime().toString(), 12), center(transaction.getDescription(), 26), center(transaction.getVendor(), 20), center(String.format("%.2f", transaction.getAmount()), 12));
             }
         } else {
-           System.out.println("No transactions found");
+            System.out.println("No transactions found");
         }
 
         System.out.println();
